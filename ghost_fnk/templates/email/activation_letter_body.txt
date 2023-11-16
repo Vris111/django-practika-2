@@ -1,0 +1,10 @@
+{{ user.username }}
+
+You have registered on the Design.Pro website
+You must complete activation to confirm your identity
+To do this, please follow the link
+
+{{ host }}{% url 'main:register_activate' sign=sign %}
+
+Goodbye!
+Sincerely, site administration.

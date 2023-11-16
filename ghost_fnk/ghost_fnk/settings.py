@@ -26,8 +26,14 @@ SECRET_KEY = 'django-insecure-x+sdta0na(c6)oq7e97p)aty^8@(_f=4svo7u239%g_7i2kt1t
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-
+EMAIL_USE_TLS = False,
+EMAIL_USE_SSL = True,
+SERVER_EMAIL = 'pythonfor412@mail.ru',
+DEFAULT_FROM_EMAIL = 'pythonfor412@mail.ru',
+EMAIL_HOST = 'smtp.mail.ru',
+EMAIL_HOST_USER = 'pythonfor412@mail.ru',
+EMAIL_HOST_PASSWORD = 'generated_application_password',
+EMAIL_PORT = 465
 # Application definition
 
 INSTALLED_APPS = [
@@ -124,4 +130,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/'
+
+AUTH_USER_MODEL = 'ghost.User'
 
