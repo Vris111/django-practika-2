@@ -1,41 +1,52 @@
-# from django.contrib.auth import password_validation
-# from django.core.exceptions import ValidationError
-# from django.forms import forms
-# from .models import user_registrated, User
-# from django.db import models
-#
-#
-# class RegisterUserForm(forms.Form):
-#     email = models.CharField(max_length=254, verbose_name='E-mail', unique=True, blank=False),
-#     password1 = models.CharField(label='Password', blank=False, help_text=password_validation.password_validators_help_text_html())
-#     password2 = models.CharField(label='Password (repeat)', blank=False, help_text='Pleas repeat your password')
-#
-#     def clean_password1(self):
-#         password1 = self.cleaned_data['password1']
-#         if password1:
-#             password_validation.validate_password(password1)
-#         return password1
-#
-#     def clean(self):
-#         super().clean()
-#         password1 = self.cleaned_data['password1']
-#         password2 = self.cleaned_data['password2']
-#         if password1 and password2 and password1 != password2:
-#             errors = {'password2': ValidationError(
-#                 'The entered passwords do not match', code='password_mismatch'
-#             )}
-#             raise ValidationError(errors)
-#
-#     def save(self, commit=True):
-#         user = super().save(commit=False)
-#         user.set_password(self.cleaned_data['password1'])
-#         user.is_active = False
-#         user.is_activated = False
-#         if commit:
-#             user.save()
-#         user_registrated.send(RegisterUserForm, instance=user)
-#         return user
-#
-#     class Meta:
-#         model = User
-#         fields = ('username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'send_messages')
+from django.contrib.auth.forms import UserCreationForm
+from django import forms
+from django.core import validators
+from django.core.exceptions import ValidationError
+from django.utils.deconstruct import deconstructible
+from ghost.models import User
+
+
+@deconstructible
+class FIOValidator(validators.RegexValidator):
+    regex = r"^[а-яА-Я\s-]+$"
+    message = "Enter a valid Full Name. This value may contain only Cyrillic letters, spaces, and dashes."
+
+
+@deconstructible
+class LoginValidator(validators.RegexValidator):
+    regex = r"^[a-zA-Z-]+$"
+    message = "Enter a valid login. This value may contain only Latin letters and '-'."
+
+
+class RegisterUserForm(UserCreationForm):
+    username = forms.CharField(label='Login', max_length=150, widget=forms.TextInput(attrs={'class': 'form-input'})),
+    email = forms.CharField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-input'})),
+    password1 = forms.CharField(label='Password'),
+    password2 = forms.CharField(label='Password'),
+    first_name = forms.CharField(label='Name', max_length=150, widget=forms.TextInput(attrs={'class': 'form-input'})),
+    last_name = forms.CharField(label='Surname', max_length=150, widget=forms.TextInput(attrs={'class': 'form-input'})),
+    patronymic = forms.CharField(label='Patronymic', max_length=150, widget=forms.TextInput(attrs={'class': 'form-input'})),
+    agree_to_processing = forms.BooleanField(required=True, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}))
+
+    # def clean_password2(self):
+    #     cd = self.cleaned_data
+    #     if cd['password'] != cd['password2']:
+    #         raise forms.ValidationError('Passwords don\'t match.')
+    #     return cd['password2']
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name', 'patronymic', 'password1', 'password2', 'agree_to_processing']
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        validator = LoginValidator()
+        try:
+            validator(username)
+        except ValidationError:
+            raise forms.ValidationError(validator.message)
+
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError('This username is already taken. Please choose another one.')
+
+        return username

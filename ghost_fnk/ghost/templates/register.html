@@ -1,0 +1,21 @@
+{% extends 'home_str.html' %}
+<style>
+.da{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+</style>
+{% block content %}
+
+<h2>Signup</h2>
+<div class="da">
+    <form method="post">
+        {% csrf_token %}
+
+        {{  form.as_p }}
+        <button type="submit">Signup</button>
+    </form>
+</div>
+{% endblock %}

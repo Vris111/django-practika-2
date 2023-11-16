@@ -1,10 +1,10 @@
-from django.urls import path
-from . import views
-#from .views import RegisterDoneView, RegisterUserView, user_activate
+from django.urls import path, include
+from .views import RegisterUser, index
+
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    # path('accounts/register/done/', RegisterDoneView.as_view(), name='register_done'),
-    # path('accounts/register/', RegisterUserView.as_view(), name='register'),
-    # path('accounts/register/activate/<str:sign>/', user_activate, name='register_activate'),
+    path('', index, name='index'),
+    path('', include('django.contrib.auth.urls')),
+    path('register/', RegisterUser.as_view(), name='register'),
+
 ]
