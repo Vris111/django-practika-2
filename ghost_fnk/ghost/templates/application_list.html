@@ -8,7 +8,13 @@
 
       {% for application in application_list %}
       <li>
-        <a href="{{ application.get_absolute_url }}">{{ application.name }}</a> ({{application.description}})
+            <p><strong>Time add:</strong> {{application.time}}</p>
+            <p><strong>Name:</strong> {{application.name}}</p>
+            <p><strong>Decsription:</strong> {{application.decsription}}</p>
+            <p><strong>Category:</strong> {{application.category}}</p>
+            <p><strong>Status:</strong> {{application.status}}</p>
+            <p><img style="max-width:100px; max-height:100px;" class="img" src="{{ application.image.url }}"></p>
+            <p><strong>-------------------------------------------------------------</strong></p>
       </li>
       {% endfor %}
 

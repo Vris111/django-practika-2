@@ -20,11 +20,13 @@
                 {% if user.is_authenticated %}
                 <ul class="sidebar-nav">
                     <li>User: {{ user.get_username }}</li>
-                    <ol><a href="{% url 'logout' %}?next={{ request.path }}">Logout</a></ol>
-                    <ol><a href="{% url 'applications' %}?next={{ request.path }}">Applications</a></ol>
                 </ul>
+                <ol><a href="{% url 'logout' %}?next={{ request.path }}">Logout</a></ol>
+                <ol><a href="{% url 'applications' %}?next={{ request.path }}">Applications</a></ol>
+
                 {% else %}
-                <ol><a href="{% url 'login' %}?next={{ request.path }}">Login</a> | <a href="{% url 'register' %}?next={{ request.path }}">SignUp</a></ol>
+                <ol><a href="{% url 'login' %}?next={{ request.path }}">Login</a> | <a
+                        href="{% url 'register' %}?next={{ request.path }}">SignUp</a></ol>
 
                 {% endif %}
             </ul>

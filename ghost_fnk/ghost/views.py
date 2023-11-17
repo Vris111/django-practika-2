@@ -10,8 +10,11 @@ from .models import Application
 
 
 def index(request):
+    counter_for_indx = Application.objects.filter(status__exact='D').order_by('time')[:4]
+    counter_for_indx_job = Application.objects.filter(status__exact='ATJ').count()
     return render(
-        request, 'index.html'
+        request, 'index.html',
+        context={'counter_for_indx': counter_for_indx, 'counter_for_indx_job': counter_for_indx_job}
     )
 
 class MyView(LoginRequiredMixin, View):

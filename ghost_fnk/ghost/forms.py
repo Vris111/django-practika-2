@@ -9,7 +9,7 @@ from ghost.models import User
 @deconstructible
 class FIOValidator(validators.RegexValidator):
     regex = r"^[а-яА-Я\s-]+$"
-    message = "Enter a valid Full Name. This value may contain only Cyrillic letters, spaces, and dashes."
+    message = "Please enter valid details. This value may contain only Cyrillic letters, spaces, and dashes."
 
 
 @deconstructible
@@ -28,12 +28,6 @@ class RegisterUserForm(UserCreationForm):
     patronymic = forms.CharField(label='Patronymic', max_length=150, widget=forms.TextInput(attrs={'class': 'form-input'})),
     agree_to_processing = forms.BooleanField(required=True, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}))
 
-    # def clean_password2(self):
-    #     cd = self.cleaned_data
-    #     if cd['password'] != cd['password2']:
-    #         raise forms.ValidationError('Passwords don\'t match.')
-    #     return cd['password2']
-
     class Meta:
         model = User
         fields = ['username', 'email', 'first_name', 'last_name', 'patronymic', 'password1', 'password2', 'agree_to_processing']
@@ -50,3 +44,35 @@ class RegisterUserForm(UserCreationForm):
             raise forms.ValidationError('This username is already taken. Please choose another one.')
 
         return username
+
+    def clean_first_name(self):
+        first_name = self.cleaned_data['first_name']
+        validator = FIOValidator()
+        try:
+            validator(first_name)
+        except ValidationError:
+            raise forms.ValidationError(validator.message)
+
+        return first_name
+
+    def clean_last_name(self):
+        last_name = self.cleaned_data['last_name']
+        validator = FIOValidator()
+        try:
+            validator(last_name)
+        except ValidationError:
+            raise forms.ValidationError(validator.message)
+
+        return last_name
+
+    def clean_patronymic(self):
+        patronymic = self.cleaned_data['patronymic']
+        validator = FIOValidator()
+        try:
+            validator(patronymic)
+        except ValidationError:
+            raise forms.ValidationError(validator.message)
+
+        return patronymic
+
+
