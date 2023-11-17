@@ -1,0 +1,19 @@
+{% extends "home_str.html" %}
+
+{% block content %}
+    <h1>Applications</h1>
+
+    {% if application_list %}
+    <ul>
+
+      {% for application in application_list %}
+      <li>
+        <a href="{{ application.get_absolute_url }}">{{ application.name }}</a> ({{application.description}})
+      </li>
+      {% endfor %}
+
+    </ul>
+    {% else %}
+      <p>There are no applications</p>
+    {% endif %}
+{% endblock %}
