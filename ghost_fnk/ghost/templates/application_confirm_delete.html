@@ -1,0 +1,25 @@
+{% extends "home_str.html" %}
+
+{% block content %}
+
+<h1>Delete application: {{ application }}</h1>
+
+{% if application.application_list.all %}
+
+<p>You can't delete this application until all their books have been deleted:</p>
+<ul>
+  {% for application in application.applications.all %}
+    <li><a href="{% url 'application-detail' application.pk %}">{{application}}</a> ({{application.applications.all.count}})</li>
+  {% endfor %}
+</ul>
+
+{% else %}
+<p>Are you sure you want to delete the application?</p>
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <input type="submit" value="Yes, delete.">
+</form>
+{% endif %}
+
+{% endblock %}
