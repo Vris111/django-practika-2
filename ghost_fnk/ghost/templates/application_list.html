@@ -2,6 +2,7 @@
 
 {% block content %}
     <h1>Applications</h1>
+    <p><a href="{% url 'application-create' %}">Create application</a></p>
 
     {% if application_list %}
     <ul>
@@ -14,10 +15,10 @@
             <p><strong>Category:</strong> {{application.category}}</p>
             <p><strong>Status:</strong> {{application.status}}</p>
             <p><img style="max-width:100px; max-height:100px;" class="img" src="{{ application.image.url }}"></p>
+            <p><a href="{% url 'application-delete' application.id %}">Delete application</a></p>
             <p><strong>-------------------------------------------------------------</strong></p>
       </li>
       {% endfor %}
-
     </ul>
     {% else %}
       <p>There are no applications</p>
