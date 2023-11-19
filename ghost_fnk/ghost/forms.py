@@ -75,4 +75,12 @@ class RegisterUserForm(UserCreationForm):
 
         return patronymic
 
+class ApplicationChekerForAdmin(forms.ModelForm):
+    def clean(self):
+        status = self.cleaned_data.get('status')
+        if self.instance.status != 'N':
+            raise forms.ValidationError({'status': "The status can only be changed for new applications"})
+        elif self.instance.status == 'D' and self.instance.image.count() < 1:
+            raise forms.ValidationError({'status': "The status - Done need had min 1 image"})
+
 
