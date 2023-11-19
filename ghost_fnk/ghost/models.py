@@ -10,9 +10,8 @@ class User(AbstractUser):
     last_name = models.CharField(verbose_name="Last name", max_length=150, blank=False)
     email = models.EmailField(verbose_name="Email address", blank=False)
     patronymic = models.CharField(max_length=150, verbose_name='Patronymic', blank=False)
-
     def __str__(self):
-        return self.user.username
+        return self.username
 
 
 class Category(models.Model):
@@ -36,7 +35,7 @@ class Application(models.Model):
         (ACCEPTED_THE_JOB, 'Accepted the job'),
         (DONE, 'Done')
     ]
-
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="User")
     status = models.CharField(max_length=150, verbose_name='Appication status', choices=AppStatus,
                               default=NEW)
     time = models.DateTimeField(auto_now_add=True)
