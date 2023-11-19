@@ -40,7 +40,7 @@ class Application(models.Model):
     status = models.CharField(max_length=150, verbose_name='Appication status', choices=AppStatus,
                               default=NEW)
     time = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to='user/', default='default.jpeg',
+    image = models.ImageField(upload_to='user/', default='media/default.jpeg',
     validators = [validate_image_file_extension,
                   FileExtensionValidator(['bmp', 'jpeg', 'jpg', 'png'],
                                          message='Allowed types: bmp, jpeg, jpg. png')])

@@ -2,12 +2,12 @@ from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.urls import reverse_lazy
 from django.views import View, generic
-from django.views.generic import CreateView, DeleteView
+from django.views.generic import CreateView, DeleteView, TemplateView
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .forms import RegisterUserForm
 from .models import Application
-
+from django.core.exceptions import ValidationError
 
 def index(request):
     counter_for_indx = Application.objects.filter(status__exact='D').order_by('time')[:4]
@@ -42,6 +42,25 @@ class ApplicationCreate(PermissionRequiredMixin, CreateView):
     permission_required = 'add_application'
     template_name = 'application_form.html'
 
+    def clean_image(self):
+        image = self.cleaned_data.get("image")
+        image_size = image.size
+        str_file = str(image)
+        if str_file.endswith('.jpg') and image_size <= 2097152:
+            return image
+        elif str_file.endswith('.jpeg') and image_size <= 2097152:
+            return image
+        elif str_file.endswith('.png') and image_size <= 2097152:
+            return image
+        elif str_file.endswith('.bpm') and image_size <= 2097152:
+            return image
+        else:
+            raise ValidationError(
+                "Error: "
+                "The file must have the following formats: jpg, jpeg, png, bmp and no more than 2MB in size."
+            )
+
+
 class ApplicationDelete(PermissionRequiredMixin, DeleteView):
     model = Application
     success_url = '/ghost/applications'
@@ -56,3 +75,17 @@ class ApplicationDelete(PermissionRequiredMixin, DeleteView):
                 reverse("application-delete", kwargs={"pk": self.object.pk})
             )
 
+class FilterApplications(TemplateView, LoginRequiredMixin):
+    template_name = 'application_list.html'
+    def get(self, request):
+        application_status = request.GET.get('status')
+
+        if application_status:
+            application_list = Application.objects.filter(status=application_status).order_by('time')
+        else:
+            application_list = Application.objects.all().order_by('time')
+
+        context = {
+            'application_list': application_list
+        }
+        return render(request, self.template_name, context)

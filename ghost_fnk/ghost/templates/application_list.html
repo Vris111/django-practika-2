@@ -1,26 +1,52 @@
 {% extends "home_str.html" %}
 
 {% block content %}
-    <h1>Applications</h1>
-    <p><a href="{% url 'application-create' %}">Create application</a></p>
+<h1>Applications</h1>
+<p><a href="{% url 'application-create' %}">Create application</a></p>
 
-    {% if application_list %}
-    <ul>
-
-      {% for application in application_list %}
-      <li>
-            <p><strong>Time add:</strong> {{application.time}}</p>
-            <p><strong>Name:</strong> {{application.name}}</p>
-            <p><strong>Decsription:</strong> {{application.decsription}}</p>
-            <p><strong>Category:</strong> {{application.category}}</p>
-            <p><strong>Status:</strong> {{application.status}}</p>
-            <p><img style="max-width:100px; max-height:100px;" class="img" src="{{ application.image.url }}"></p>
-            <p><a href="{% url 'application-delete' application.id %}">Delete application</a></p>
-            <p><strong>-------------------------------------------------------------</strong></p>
-      </li>
-      {% endfor %}
-    </ul>
-    {% else %}
-      <p>There are no applications</p>
-    {% endif %}
+{% if application_list %}
+<ul>
+    <form action="{% url 'applications-filter' %}" method="get" name="filter">
+        <h4>Select filter</h4>
+        <div>
+            <select name="status">
+                <option value="N">New</option>
+                <option value="ATJ">At the job</option>
+                <option value="D">Done</option>
+            </select>
+        </div>
+        <button type="submit">Select</button>
+    </form>
+    {% for application in application_list %}
+    <li>
+        <p><strong>Time add:</strong> {{application.time}}</p>
+        <p><strong>Name:</strong> {{application.name}}</p>
+        <p><strong>Decsription:</strong> {{application.decsription}}</p>
+        <p><strong>Category:</strong> {{application.category}}</p>
+        <p><strong>Status:</strong> {{application.status}}</p>
+        {% if application.status == 'N' %}
+        <p><a href="{% url 'application-delete' application.id %}">Delete application</a></p>
+        {% else %}
+        <p>You cannot delete this application because it has already been made or is in progress.</p>
+        {% endif %}
+        <p><strong>-------------------------------------------------------------</strong></p>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<ul>
+    <form action="{% url 'applications-filter' %}" method="get" name="filter">
+        <h4>Select filter</h4>
+        <div>
+            <select name="status">
+                <option value="N">New</option>
+                <option value="ATJ">At the job</option>
+                <option value="D">Done</option>
+            </select>
+        </div>
+        <button type="submit">Select</button>
+    </form>
+    <p>There are no applications</p>
+</ul>
+{% endif %}
 {% endblock %}
