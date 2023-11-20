@@ -12,7 +12,8 @@ urlpatterns = [
     path('applications/<int:pk>', views.ApplicationDetailView.as_view(), name='application-detail'),
     path('application/create/', views.ApplicationCreate.as_view(), name='application-create'),
     path('application/<int:pk>/delete/', views.ApplicationDelete.as_view(), name='application-delete'),
-    path('applications/filter/', FilterApplications.as_view(), name='applications-filter')
-
+    path('applications/filter/', FilterApplications.as_view(), name='applications-filter'),
+    path('categories/', views.ApplicationsAdmin.as_view(), name='categories'),
+    path('categories/', views.CategoriesDelete.as_view(), name='category-delete')
 ]+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL,
                                                                                            document_root=settings.MEDIA_ROOT)

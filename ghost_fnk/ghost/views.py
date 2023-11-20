@@ -116,3 +116,33 @@ class FilterApplications(TemplateView, LoginRequiredMixin):
             'application_list': application_list
         }
         return render(request, self.template_name, context)
+
+
+class ApplicationsAdmin(TemplateView, LoginRequiredMixin):
+    template_name = 'application_list_admin.html'
+
+    def get(self, request):
+        application_categories = Application.objects.values_list('category', flat=True).distinct()
+
+        context = {
+            'application_categories': application_categories
+        }
+        return render(request, self.template_name, context)
+
+class CategoriesDelete(PermissionRequiredMixin, DeleteView):
+    model = Application
+    success_url = '/ghost/applications'
+    permission_required = 'delete_application'
+    template_name = 'application_form.html'
+
+    def form_valid(self, form):
+        try:
+            application = self.get_object()
+            application.categories.clear()
+            self.object.delete()
+            return HttpResponseRedirect(self.success_url)
+        except Exception as e:
+            return HttpResponseRedirect(
+                reverse("application-delete", kwargs={"pk": self.object.pk})
+            )
+

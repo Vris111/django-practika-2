@@ -29,6 +29,13 @@
                         href="{% url 'register' %}?next={{ request.path }}">SignUp</a></ol>
 
                 {% endif %}
+                {% if user.is_staff %}
+                <hr>
+                <ul>
+                    <li>Staff</li>
+                    <ol><a href="{% url 'categories' %}">Categories</a></ol>
+                </ul>
+                {% endif %}
             </ul>
             </ul>
 
