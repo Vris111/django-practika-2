@@ -3,7 +3,6 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import validate_image_file_extension, FileExtensionValidator
 from django.urls import reverse
 
-
 class User(AbstractUser):
     username = models.CharField(max_length=150, verbose_name='Login', unique=True, blank=False)
     first_name = models.CharField(verbose_name="First name", max_length=150, blank=False)

@@ -6,7 +6,7 @@
 
 {% if application.application_list.all %}
 
-<p>You can't delete this application until all their books have been deleted:</p>
+<p>You can't delete this application until all their applications have been deleted:</p>
 <ul>
   {% for application in application.applications.all %}
     <li><a href="{% url 'application-detail' application.pk %}">{{application}}</a> ({{application.applications.all.count}})</li>

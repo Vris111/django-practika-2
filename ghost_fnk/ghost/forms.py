@@ -3,7 +3,7 @@ from django import forms
 from django.core import validators
 from django.core.exceptions import ValidationError
 from django.utils.deconstruct import deconstructible
-from ghost.models import User
+from .models import User
 
 
 @deconstructible
@@ -25,12 +25,15 @@ class RegisterUserForm(UserCreationForm):
     password2 = forms.CharField(label='Password'),
     first_name = forms.CharField(label='Name', max_length=150, widget=forms.TextInput(attrs={'class': 'form-input'})),
     last_name = forms.CharField(label='Surname', max_length=150, widget=forms.TextInput(attrs={'class': 'form-input'})),
-    patronymic = forms.CharField(label='Patronymic', max_length=150, widget=forms.TextInput(attrs={'class': 'form-input'})),
-    agree_to_processing = forms.BooleanField(required=True, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}))
+    patronymic = forms.CharField(label='Patronymic', max_length=150,
+                                 widget=forms.TextInput(attrs={'class': 'form-input'})),
+    agree_to_processing = forms.BooleanField(required=True,
+                                             widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}))
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'first_name', 'last_name', 'patronymic', 'password1', 'password2', 'agree_to_processing']
+        fields = ['username', 'email', 'first_name', 'last_name', 'patronymic', 'password1', 'password2',
+                  'agree_to_processing']
 
     def clean_username(self):
         username = self.cleaned_data['username']
@@ -75,6 +78,7 @@ class RegisterUserForm(UserCreationForm):
 
         return patronymic
 
+
 class ApplicationChekerForAdmin(forms.ModelForm):
     def clean(self):
         status = self.cleaned_data.get('status')
@@ -82,5 +86,3 @@ class ApplicationChekerForAdmin(forms.ModelForm):
             raise forms.ValidationError({'status': "The status can only be changed for new applications"})
         elif self.instance.status == 'D' and self.instance.image.count() < 1:
             raise forms.ValidationError({'status': "The status - Done need had min 1 image"})
-
-
