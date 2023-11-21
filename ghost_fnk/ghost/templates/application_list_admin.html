@@ -1,36 +1,15 @@
 {% extends "home_str.html" %}
 
 {% block content %}
-<h1>Applications</h1>
-<p><a href="{% url 'application-create' %}">Create application</a></p>
+<h1>Categories</h1>
+<p><a href="{% url 'category-create' %}">Create category</a></p>
 
 
 {% for category in application_categories %}
 <ul>
     <li>{{ category }}</li>
-    <p><a href="{% url 'category-delete' %}">Delete category</a></p>
 </ul>
 
 {% endfor %}
 
-{% if application_list %}
-<ul>
-    {% for application in application_list %}
-    <li>
-        <p><strong>Time add:</strong> {{application.time}}</p>
-        <p><strong>Name:</strong> {{application.name}}</p>
-        <p><strong>Decsription:</strong> {{application.description}}</p>
-        <p><strong>Category:</strong> {{application.category}}</p>
-        <p><strong>Status:</strong> {{application.status}}</p>
-        {% if application.status == 'N' %}
-        <p><a href="{% url 'application-delete' application.id %}">Delete application</a></p>
-        {% else %}
-        <p>You cannot delete this application because it has already been made or is in progress.</p>
-        {% endif %}
-        <p><strong>-------------------------------------------------------------</strong></p>
-    </li>
-    {% endfor %}
-</ul>
-{% else %}
-{% endif %}
 {% endblock %}

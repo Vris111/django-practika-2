@@ -7,7 +7,7 @@ from django.views.generic import CreateView, DeleteView, TemplateView
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .forms import RegisterUserForm
-from .models import Application
+from .models import Application, Category
 from django.core.exceptions import ValidationError
 
 
@@ -129,20 +129,18 @@ class ApplicationsAdmin(TemplateView, LoginRequiredMixin):
         }
         return render(request, self.template_name, context)
 
-class CategoriesDelete(PermissionRequiredMixin, DeleteView):
-    model = Application
-    success_url = '/ghost/applications'
-    permission_required = 'delete_application'
-    template_name = 'application_form.html'
+class CategoryCreate(CreateView):
+    model = Category
+    fields = ['name']
+    template_name = 'category_form.html'
+    success_url = '/ghost/categories'
 
     def form_valid(self, form):
         try:
-            application = self.get_object()
-            application.categories.clear()
+            self.object = form.save()
             self.object.delete()
             return HttpResponseRedirect(self.success_url)
         except Exception as e:
             return HttpResponseRedirect(
-                reverse("application-delete", kwargs={"pk": self.object.pk})
+                reverse("category-create", kwargs={"pk": self.object.pk})
             )
-
