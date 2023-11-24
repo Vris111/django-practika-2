@@ -122,7 +122,7 @@ class ApplicationsAdmin(TemplateView, LoginRequiredMixin):
     template_name = 'application_list_admin.html'
 
     def get(self, request):
-        application_categories = Application.objects.values_list('category', flat=True).distinct()
+        application_categories = Application.objects.values_list('name', flat=True).distinct()
 
         context = {
             'application_categories': application_categories
