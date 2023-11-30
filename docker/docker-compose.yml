@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+    web:
+      restart: always
+      build: 
+        dockerfile: ../docker/python/Dockerfile
+        context: ../ghost_fnk
+      command: "gunicorn -c gunicorn.py ghost_fnk.wsgi"
+      expose:
+          - 8080
+      ports:
+          - 8080:8080
+      volumes:
+          - ./ghost_fnk:/srv/www/ghost_fnk
+    nginx:
+      restart: always
+      image: nginx:latest
+      expose:
+          - 8080
+      ports:
+          - "80:8080"
+      volumes:
+          - ./ghost_fnk/static:/srv/www/ghost_fnk/static
+          - ./ghost_fnk/media:/srv/www/ghost_fnk/media
+          - ./ghost_fnk/logs:/srv/www/ghost_fnk/logs
+          - ./docker/nginx:/etc/nginx/conf.d
+      depends_on:
+          - web
