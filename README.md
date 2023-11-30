@@ -1,1 +1,5 @@
-# django-practika-2
+# django-practika-
+Для запуска приложения через docker:
+cd docker 
+docker compose up
+-----------------------------------
