@@ -1,5 +1,5 @@
 # django-practika-
 Для запуска приложения через docker:
-cd docker 
+cd docker |
 docker compose up
 -----------------------------------
