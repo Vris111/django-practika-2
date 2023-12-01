@@ -1,0 +1,12 @@
+{% extends "home_str.html" %}
+
+{% block content %}
+<h1>Application: {{ application.name }}</h1>
+
+<p><strong>Name:</strong>{{ application.name }}</p>
+<p><strong>Description:</strong> {{ application.description }}</p>
+<p><strong>Category:</strong> {{ application.category }}</p>
+<p><strong>Status:</strong> {{ application.status }}</p>
+<p><strong>Time:</strong> {{ application.time }}</p>
+<p><strong>Image:</strong><img style="max-width:100px; max-height:100px;" class="img" src="{{ application.image.url }}"</p>
+{% endblock %}

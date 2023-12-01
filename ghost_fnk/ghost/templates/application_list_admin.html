@@ -1,0 +1,15 @@
+{% extends "home_str.html" %}
+
+{% block content %}
+<h1>Categories</h1>
+<p><a href="{% url 'category-create' %}">Create category</a></p>
+
+
+{% for category in application_categories %}
+<ul>
+    <li>{{ category }}</li>
+</ul>
+
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "home_str.html" %}
+{% block title %}<title>Ghost_functionality</title>{% endblock %}
+{% block content %}
+
+{% if user.is_authenticated %}
+<h3>Welcome to Design.Pro </h3>
+{% if counter_for_indx %}
+<p><strong>Applications in progress:</strong> {{ counter_for_indx_job }}</p>
+<p><strong>Completed applications</strong></p>
+<p><strong>-------------------------------------------------------------</strong></p>
+{% for i in counter_for_indx %}
+<p><strong>Time add:</strong> {{i.time}}</p>
+<p><strong>Name:</strong> {{i.name}}</p>
+<p><strong>Category:</strong> {{i.category}}</p>
+<p><img style="max-width:100px; max-height:100px;" class="img" src="{{ i.image.url }}"></p>
+<p><strong>-------------------------------------------------------------</strong></p>
+{% endfor %}
+{% else %}
+<p>We don't have completed applications</p>
+{% endif %}
+{% endif %}
+{% endblock %}
