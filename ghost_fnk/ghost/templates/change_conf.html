@@ -1,0 +1,11 @@
+{% extends "home_str.html" %}
+{%block content%}
+<p>Confirm change status</p>
+
+<form method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_table}}
+  <input type="submit" value="Change">
+</form>
+
+{% endblock %}

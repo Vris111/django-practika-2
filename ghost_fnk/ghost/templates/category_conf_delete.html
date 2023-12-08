@@ -1,0 +1,10 @@
+{% extends "home_str.html" %}
+{%block content%}
+<p>Confirm deleting the category</p>
+
+<form method="POST">
+  {% csrf_token %}
+  <input type="submit" value="Yes, delete.">
+</form>
+
+{% endblock %}
