@@ -5,9 +5,9 @@
 <p><a href="{% url 'category-create' %}">Create category</a></p>
 
 
-{% for category in application_categories %}
+{% for category in category_list %}
 <ul>
-    <li>{{ category }}</li>
+    <li>{{ category }} <a href="{% url 'category-delete' pk=category.id %}"> --del--</a></li>
 </ul>
 
 {% endfor %}

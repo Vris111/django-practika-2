@@ -24,8 +24,18 @@
         <p><strong>Decsription:</strong> {{application.description}}</p>
         <p><strong>Category:</strong> {{application.category}}</p>
         <p><strong>Status:</strong> {{application.status}}</p>
+        {% if application.status == 'ATJ' %}
+        <p><strong>Comment:</strong> {{application.comm}}</p>
+        {% endif %}
+        {% if application.status == 'D' %}
+        <p><strong>Image on done:</strong></p>
+        <img style="max-width:100px; max-height:100px;" class="img"
+             src="{{ application.image_status.url }}">
+        {% endif %}
         {% if application.status == 'N' %}
-        <p><a href="{% url 'application-delete' application.id %}">Delete application</a></p>
+        <p><a href="{% url 'application-delete' application.id %}">Delete application</a> | <a
+                href="{% url 'status-change-ATJ' application.pk %}">Status --> ATJ</a> | <a
+                href="{% url 'status-change-D' application.pk %}">Status --> D</a></p>
         {% else %}
         <p>You cannot delete this application because it has already been made or is in progress.</p>
         {% endif %}

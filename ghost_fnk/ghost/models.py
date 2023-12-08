@@ -14,7 +14,7 @@ class User(AbstractUser):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=150, verbose_name='Category name', blank=False)
+    name = models.CharField(max_length=150, verbose_name='Category name', blank=False, unique=True)
 
     def __str__(self):
         return self.name
@@ -39,10 +39,14 @@ class Application(models.Model):
                               default=NEW)
     time = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='user/', default='media/default.jpeg',
-    validators = [validate_image_file_extension,
+    validators =[validate_image_file_extension,
                   FileExtensionValidator(['bmp', 'jpeg', 'jpg', 'png'],
                                          message='Allowed types: bmp, jpeg, jpg. png')])
-
+    image_status = models.ImageField(upload_to='user/', verbose_name='Image for status',default='media/default.jpeg',
+    validators =[validate_image_file_extension,
+                  FileExtensionValidator(['bmp', 'jpeg', 'jpg', 'png'],
+                                         message='Allowed types: bmp, jpeg, jpg. png')])
+    comm = models.CharField(max_length=150, verbose_name='comment', blank=False)
     def __str__(self):
         return self.name
 
